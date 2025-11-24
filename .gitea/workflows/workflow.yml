@@ -23,7 +23,7 @@ jobs:
           GITEA_HEAD_REF: ${{ gitea.event.pull_request.head.ref }}
 
       - name: Checkout tests
-        run: python3 /opt/scripts/copy-tests.py --repo-url "Olympic/NTO-2025-Android-TeamTask-tests" --branch "main" --task-type "spring"
+        run: python3 /opt/scripts/copy-tests.py --repo-url "Olympic/NTO-2025-Backend-TeamTask-tests" --branch "main" --task-type "spring"
 
       - name: Run tests
         run: mvn test
