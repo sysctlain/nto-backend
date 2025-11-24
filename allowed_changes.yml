@@ -1,0 +1,8 @@
+version: 1
+allowed_files:
+  - "src/main/java/com/example/nto/*"
+  - "src/main/resources/*"
+forbidden_files:
+  - "src/main/resources/application.yml"
+  - "src/main/resources/db.changelog/*"
+  - "pom.xml"
