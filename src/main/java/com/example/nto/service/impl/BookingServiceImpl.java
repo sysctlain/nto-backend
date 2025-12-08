@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
     @Autowired
     private BookingRepository bookingRepository;
     @Autowired
@@ -36,7 +34,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Map<String, List<BookingDetailsDto>> getAvailableBookings(String authCode) {
         if (!employeeService.isCodeValid(authCode)) {
-            throw new NoEmployeeFoundException("No such code");
+            throw new NoEmployeeFoundException("Сотрудника с таким кодом не существует");
         }
 
         LocalDate beginDate = LocalDate.now();
@@ -61,7 +59,7 @@ public class BookingServiceImpl implements BookingService {
                     .map(place -> new BookingDetailsDto(place.getId(), place.getPlace())) // getPlace <=> getName
                     .collect(Collectors.toList());
 
-            availableBookingsMap.put(currentDate.format(DATE_FORMAT), availablePlaces);
+            availableBookingsMap.put(currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), availablePlaces);
         }
 
         return availableBookingsMap;
@@ -69,12 +67,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void createBooking(String authCode, BookingCreationDto requestDto) {
-        Employee employee = employeeService.getEmployeeByCode(authCode).orElseThrow(() -> new NoEmployeeFoundException("No such code"));
-        Place place = placeRepository.findById(requestDto.getPlaceId()).orElseThrow(() -> new NoPlaceFoundException("No such place"));
+        Employee employee = employeeService.getEmployeeByCode(authCode).orElseThrow(() -> new NoEmployeeFoundException("Сотрудника с таким кодом не существует"));
+        Place place = placeRepository.findById(requestDto.getPlaceId()).orElseThrow(() -> new NoPlaceFoundException("Такого места не существует"));
 
         Optional<Booking> existingBooking = bookingRepository.findByDateAndPlaceId(requestDto.getDate(), requestDto.getPlaceId());
         if (existingBooking.isPresent()) {
-            throw new AlreadyBookedException("Booking already exists");
+            throw new AlreadyBookedException("Место уже забронировано");
         }
 
         Booking booking = Booking.builder()

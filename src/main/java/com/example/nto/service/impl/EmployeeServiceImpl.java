@@ -21,7 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeInfoDto getEmployeeInfoByCode(String authCode) {
-        Employee employee = employeeRepository.findEmployeeByCode(authCode).orElseThrow(() -> new NoEmployeeFoundException("No user with such code"));
+        Employee employee = employeeRepository.findEmployeeByCode(authCode).orElseThrow(() -> new NoEmployeeFoundException("Сотрудника с таким кодом не существует"));
         return EmployeeInfoConverter.toDto(employee);
     }
 

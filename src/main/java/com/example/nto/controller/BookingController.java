@@ -20,7 +20,7 @@ public class BookingController {
     @GetMapping("{code}/booking")
     public ResponseEntity<?> booking(@PathVariable String code) {
         if (code == null || code.isEmpty()) {
-            throw new EmptyCodeException("Был передан пустой код");
+            throw new EmptyCodeException("Был передан пустой код сотрудника");
         }
 
         return ResponseEntity.ok(bookingService.getAvailableBookings(code));
@@ -29,7 +29,7 @@ public class BookingController {
     @PostMapping("{code}/book")
     public ResponseEntity<?> book(@PathVariable String code,  @Valid @RequestBody BookingCreationDto requestDto) {
         if (code == null || code.isEmpty()) {
-            throw new EmptyCodeException("Пустой код");
+            throw new EmptyCodeException("Был передан пустой код сотрудника");
         }
 
         bookingService.createBooking(code, requestDto);
