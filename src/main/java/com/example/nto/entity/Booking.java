@@ -22,14 +22,6 @@ public class Booking {
     @Column(name = "date")
     private LocalDate date;
 
-
-//    @Column(name = "place_id", insertable = false, updatable = false)
-//    private Long placeId;
-//
-//    @Column(name = "employee_id", insertable = false, updatable = false)
-//    private Long employeeId;
-
-
     @ManyToOne(targetEntity = Place.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
