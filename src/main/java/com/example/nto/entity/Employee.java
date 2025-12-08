@@ -9,24 +9,25 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
-/**
- * TODO: ДОРАБОТАТЬ в рамках задания
- * =================================
- * МОЖНО: Добавлять методы, аннотации, зависимости
- * НЕЛЬЗЯ: Изменять название класса и пакета
- */
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name="employee")
 public class Employee {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "code")
     private String code;
 
+    @Column(name = "photo_url")
     private String photoUrl;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

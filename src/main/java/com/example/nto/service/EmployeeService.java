@@ -1,10 +1,14 @@
 package com.example.nto.service;
 
-/**
- * TODO: ДОРАБОТАТЬ в рамках задания
- * =================================
- * МОЖНО: Добавлять методы, аннотации, зависимости
- * НЕЛЬЗЯ: Изменять название класса и пакета
- */
+import com.example.nto.dto.EmployeeInfoDto;
+import com.example.nto.entity.Employee;
+
+import java.util.Optional;
+
+
 public interface EmployeeService {
+    Optional<EmployeeInfoDto> getEmployeeInfoByCode(String authCode);
+    Optional<Employee> getEmployeeByCode(String authCode);
+
+    boolean isCodeValid(String authCode);
 }

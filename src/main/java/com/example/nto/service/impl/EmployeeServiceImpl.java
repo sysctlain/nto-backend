@@ -1,12 +1,39 @@
 package com.example.nto.service.impl;
 
+import com.example.nto.dto.EmployeeInfoDto;
+import com.example.nto.dto.converter.EmployeeInfoConverter;
+import com.example.nto.entity.Employee;
+import com.example.nto.exception.NoSuchCodeException;
+import com.example.nto.repository.EmployeeRepository;
 import com.example.nto.service.EmployeeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * TODO: ДОРАБОТАТЬ в рамках задания
- * =================================
- * МОЖНО: Добавлять методы, аннотации, зависимости
- * НЕЛЬЗЯ: Изменять название класса и пакета
- */
+import java.util.Optional;
+
+
+@Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+    @Autowired
+    private final EmployeeRepository employeeRepository;
+
+    @Override
+    public Optional<EmployeeInfoDto> getEmployeeInfoByCode(String authCode) {
+        Employee employee = employeeRepository.findEmployeeByCode(authCode).orElseThrow(() -> new NoSuchCodeException("No user with such code"));
+
+        // do i really need optional?
+        return Optional.ofNullable(EmployeeInfoConverter.toDto(employee));
+    }
+
+    @Override
+    public Optional<Employee> getEmployeeByCode(String authCode) {
+        return employeeRepository.findEmployeeByCode(authCode);
+    }
+
+    @Override
+    public boolean isCodeValid(String authCode) {
+        return employeeRepository.findEmployeeByCode(authCode).isPresent();
+    }
 }
