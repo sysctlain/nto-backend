@@ -1,14 +1,17 @@
 package com.example.nto.controller;
+
 import com.example.nto.dto.EmployeeInfoDto;
-import com.example.nto.dto.converter.EmployeeInfoConverter;
+import com.example.nto.exception.EmptyCodeException;
+import com.example.nto.exception.NoEmployeeFoundException;
 import com.example.nto.service.EmployeeService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.env.RandomValuePropertySourceEnvironmentPostProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -23,29 +26,22 @@ public class EmployeeController {
     @GetMapping("{code}/auth")
     public ResponseEntity<String> auth(@PathVariable("code") String code) {
         if (code == null || code.isEmpty()) {
-            return new ResponseEntity<>("пустой код", HttpStatus.BAD_REQUEST);
+            throw new EmptyCodeException("Был передан пустой код сотрудника");
         }
 
         if (employeeService.isCodeValid(code)) {
-            return new ResponseEntity<>("гуд", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body("Авторизация успешна");
         } else {
-            return new ResponseEntity<>("пользователя такого нет", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Такого сотрудника не существует");
         }
     }
 
     @GetMapping("{code}/info")
     public ResponseEntity<?> info(@PathVariable("code") String code) {
-        System.out.println("1111111111111111111111111111111111111111" + " " + code);
-
         if (code == null || code.isEmpty()) {
-            return new ResponseEntity<>("пустой код", HttpStatus.BAD_REQUEST);
+            throw new EmptyCodeException("Был передан пустой код сотрудника");
         }
 
-        Optional<EmployeeInfoDto> einfoOpt = employeeService.getEmployeeInfoByCode(code);
-        if (einfoOpt.isEmpty()) {
-            return new ResponseEntity<>("Такой пользователь не найден", HttpStatus.UNAUTHORIZED);
-        }
-
-        return new ResponseEntity<>(einfoOpt.get(), HttpStatus.OK);
+        return ResponseEntity.ok(employeeService.getEmployeeInfoByCode(code));
     }
 }

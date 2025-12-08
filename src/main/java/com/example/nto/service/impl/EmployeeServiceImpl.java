@@ -3,7 +3,7 @@ package com.example.nto.service.impl;
 import com.example.nto.dto.EmployeeInfoDto;
 import com.example.nto.dto.converter.EmployeeInfoConverter;
 import com.example.nto.entity.Employee;
-import com.example.nto.exception.NoSuchCodeException;
+import com.example.nto.exception.NoEmployeeFoundException;
 import com.example.nto.repository.EmployeeRepository;
 import com.example.nto.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public Optional<EmployeeInfoDto> getEmployeeInfoByCode(String authCode) {
-        Employee employee = employeeRepository.findEmployeeByCode(authCode).orElseThrow(() -> new NoSuchCodeException("No user with such code"));
-
-        // do i really need optional?
-        return Optional.ofNullable(EmployeeInfoConverter.toDto(employee));
+    public EmployeeInfoDto getEmployeeInfoByCode(String authCode) {
+        Employee employee = employeeRepository.findEmployeeByCode(authCode).orElseThrow(() -> new NoEmployeeFoundException("No user with such code"));
+        return EmployeeInfoConverter.toDto(employee);
     }
 
     @Override

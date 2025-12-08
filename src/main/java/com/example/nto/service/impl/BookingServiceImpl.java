@@ -2,17 +2,15 @@ package com.example.nto.service.impl;
 
 import com.example.nto.dto.BookingCreationDto;
 import com.example.nto.dto.BookingDetailsDto;
-import com.example.nto.dto.converter.BookingDetailsConverter;
 import com.example.nto.entity.Booking;
 import com.example.nto.entity.Employee;
 import com.example.nto.entity.Place;
 import com.example.nto.exception.AlreadyBookedException;
-import com.example.nto.exception.NoSuchCodeException;
-import com.example.nto.exception.NoSuchPlaceException;
+import com.example.nto.exception.NoEmployeeFoundException;
+import com.example.nto.exception.NoPlaceFoundException;
 import com.example.nto.repository.BookingRepository;
 import com.example.nto.repository.PlaceRepository;
 import com.example.nto.service.BookingService;
-import com.example.nto.service.BookingStatus;
 import com.example.nto.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +34,9 @@ public class BookingServiceImpl implements BookingService {
 
     // возвращает только за 4 дня букинги
     @Override
-    public Optional<Map<String, List<BookingDetailsDto>>> getAvailableBookings(String authCode) {
+    public Map<String, List<BookingDetailsDto>> getAvailableBookings(String authCode) {
         if (!employeeService.isCodeValid(authCode)) {
-            throw new NoSuchCodeException("No such code");
+            throw new NoEmployeeFoundException("No such code");
         }
 
         LocalDate beginDate = LocalDate.now();
@@ -66,14 +64,13 @@ public class BookingServiceImpl implements BookingService {
             availableBookingsMap.put(currentDate.format(DATE_FORMAT), availablePlaces);
         }
 
-        // do i need optional when i have exceptions?
-        return Optional.of(availableBookingsMap);
+        return availableBookingsMap;
     }
 
     @Override
-    public BookingStatus createBooking(String authCode, BookingCreationDto requestDto) {
-        Employee employee = employeeService.getEmployeeByCode(authCode).orElseThrow(() -> new NoSuchCodeException("No such code"));
-        Place place = placeRepository.findById(requestDto.getPlaceId()).orElseThrow(() -> new NoSuchPlaceException("No such place"));
+    public void createBooking(String authCode, BookingCreationDto requestDto) {
+        Employee employee = employeeService.getEmployeeByCode(authCode).orElseThrow(() -> new NoEmployeeFoundException("No such code"));
+        Place place = placeRepository.findById(requestDto.getPlaceId()).orElseThrow(() -> new NoPlaceFoundException("No such place"));
 
         Optional<Booking> existingBooking = bookingRepository.findByDateAndPlaceId(requestDto.getDate(), requestDto.getPlaceId());
         if (existingBooking.isPresent()) {
@@ -87,7 +84,5 @@ public class BookingServiceImpl implements BookingService {
                 .build();
 
         bookingRepository.save(booking);
-
-        return BookingStatus.SUCCESS;
     }
 }

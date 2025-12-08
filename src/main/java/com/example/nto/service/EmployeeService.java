@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 public interface EmployeeService {
-    Optional<EmployeeInfoDto> getEmployeeInfoByCode(String authCode);
+    EmployeeInfoDto getEmployeeInfoByCode(String authCode);
     Optional<Employee> getEmployeeByCode(String authCode);
 
     boolean isCodeValid(String authCode);

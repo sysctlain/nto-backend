@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface BookingService {
-    Optional<Map<String, List<BookingDetailsDto>>> getAvailableBookings(String authCode);
+    Map<String, List<BookingDetailsDto>> getAvailableBookings(String authCode);
 
-    BookingStatus createBooking(String authCode, BookingCreationDto requestDto);
+    void createBooking(String authCode, BookingCreationDto requestDto);
 }

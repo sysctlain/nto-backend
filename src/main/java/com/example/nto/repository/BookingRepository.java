@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findByDateAndPlaceId(LocalDate date, long placeId);
-
     List<Booking> findByDateBetween(LocalDate dateAfter, LocalDate dateBefore);
-    // maybe add function to add
 }
