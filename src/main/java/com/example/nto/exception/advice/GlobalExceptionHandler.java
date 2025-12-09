@@ -1,9 +1,6 @@
 package com.example.nto.exception.advice;
 
-import com.example.nto.exception.AlreadyBookedException;
-import com.example.nto.exception.EmptyCodeException;
-import com.example.nto.exception.NoEmployeeFoundException;
-import com.example.nto.exception.NoPlaceFoundException;
+import com.example.nto.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,6 +26,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AlreadyBookedException.class)
     public ResponseEntity<String> handleAlreadyBookedException(AlreadyBookedException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("");
+    }
+
+    @ExceptionHandler(AlreadyHasBookingException.class)
+    public ResponseEntity<String> handleAlreadyHasBookingException(AlreadyHasBookingException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("");
     }
 }

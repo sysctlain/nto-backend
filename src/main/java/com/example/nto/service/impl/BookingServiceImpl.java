@@ -7,6 +7,7 @@ import com.example.nto.entity.Booking;
 import com.example.nto.entity.Employee;
 import com.example.nto.entity.Place;
 import com.example.nto.exception.AlreadyBookedException;
+import com.example.nto.exception.AlreadyHasBookingException;
 import com.example.nto.exception.NoEmployeeFoundException;
 import com.example.nto.exception.NoPlaceFoundException;
 import com.example.nto.repository.BookingRepository;
@@ -74,6 +75,9 @@ public class BookingServiceImpl implements BookingService {
         Optional<Booking> existingBooking = bookingRepository.findByDateAndPlaceId(requestDto.getDate(), requestDto.getPlaceId());
         if (existingBooking.isPresent()) {
             throw new AlreadyBookedException("Место уже забронировано");
+        }
+        if (bookingRepository.employeeHasBookingAtDate(authCode, requestDto.getDate())) {
+            throw new AlreadyHasBookingException("Сотрудник уже забронировал место на эту дату");
         }
 
         Booking booking = Booking.builder()
