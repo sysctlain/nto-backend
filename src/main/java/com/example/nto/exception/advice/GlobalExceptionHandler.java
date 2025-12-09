@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(NoEmployeeFoundException.class)
     public ResponseEntity<String> handleNoEmployeeFoundException(NoEmployeeFoundException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
     }
 
     @ExceptionHandler(NoPlaceFoundException.class)
     public ResponseEntity<String> handleNoPlaceFoundException(NoPlaceFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
     }
 
     @ExceptionHandler(EmptyCodeException.class)
     public ResponseEntity<String> handleEmptyCodeException(EmptyCodeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
     }
 
     @ExceptionHandler(AlreadyBookedException.class)
     public ResponseEntity<String> handleAlreadyBookedException(AlreadyBookedException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("");
     }
 }

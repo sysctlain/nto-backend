@@ -26,9 +26,9 @@ public class EmployeeController {
         }
 
         if (employeeService.isCodeValid(code)) {
-            return ResponseEntity.status(HttpStatus.OK).body("Авторизация успешна");
+            return ResponseEntity.status(HttpStatus.OK).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Такого сотрудника не существует");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         }
     }
 

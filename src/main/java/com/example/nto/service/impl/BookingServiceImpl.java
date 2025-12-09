@@ -2,6 +2,7 @@ package com.example.nto.service.impl;
 
 import com.example.nto.dto.BookingCreationDto;
 import com.example.nto.dto.BookingDetailsDto;
+import com.example.nto.dto.converter.BookingDetailsConverter;
 import com.example.nto.entity.Booking;
 import com.example.nto.entity.Employee;
 import com.example.nto.entity.Place;
@@ -56,7 +57,7 @@ public class BookingServiceImpl implements BookingService {
 
             List<BookingDetailsDto> availablePlaces = places.stream()
                     .filter(place -> !bookedIds.contains(place.getId()))
-                    .map(place -> new BookingDetailsDto(place.getId(), place.getPlace())) // getPlace <=> getName
+                    .map(BookingDetailsConverter::toDto)
                     .collect(Collectors.toList());
 
             availableBookingsMap.put(currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), availablePlaces);
