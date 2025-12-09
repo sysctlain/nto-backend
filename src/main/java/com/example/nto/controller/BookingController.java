@@ -33,6 +33,6 @@ public class BookingController {
         }
 
         bookingService.createBooking(code, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Бронирование успешно создано");
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 }

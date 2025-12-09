@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoPlaceFoundException.class)
     public ResponseEntity<String> handleNoPlaceFoundException(NoPlaceFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
     }
 
     @ExceptionHandler(EmptyCodeException.class)
